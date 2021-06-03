@@ -70,7 +70,7 @@ func TestStoreWins(t *testing.T) {
 
 	server := &PlayerServer{&store}	
 
-	t.Run("it records wins when POST", func(t *testing.T) {
+	t.Run("it records wins on POST", func(t *testing.T) {
 		player := "Pepper"
 
 		request := newPostWinRequest(player)
@@ -83,6 +83,10 @@ func TestStoreWins(t *testing.T) {
 		if len(store.winCalls) != 1 {
 			t.Fatalf("got %d calls to RecordWin want %d", len(store.winCalls), 1)
 		}	
+
+		if store.winCalls[0] != player {
+			t.Errorf("did not store correct winner got %q want %q", store.winCalls[0], player)
+	}
 	})
 }
 
