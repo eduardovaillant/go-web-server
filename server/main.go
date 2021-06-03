@@ -5,8 +5,6 @@ import (
 	"net/http"
 )
 
-// Run the Application -> InMemoryPlayerStore
-
 type InMemoryPlayerStore struct {}
 
 func (i *InMemoryPlayerStore) GetPlayerScore(name string) int {
