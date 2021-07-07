@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strings"
 )
@@ -40,17 +39,19 @@ func(p *PlayerServer) processWin(w http.ResponseWriter, player string) {
 func (p *PlayerServer) showScore(w http.ResponseWriter, player string) {
 	score := p.store.GetPlayerScore(player)
 
+	w.WriteHeader(http.StatusAccepted)
+	w.Header().Set("Content-Type", "application/json")
+	
 	if score == 0 {
 		w.WriteHeader(http.StatusNotFound)
 	}
-
-	fmt.Fprint(w, score)
+	
+	json.NewEncoder(w).Encode(map[string]int{"score": score})
 }
 
 func(p *PlayerServer) listAllPlayers(w http.ResponseWriter) {
 	scores := p.store.GetAllPlayers()
 	w.WriteHeader(http.StatusAccepted)
 	w.Header().Set("Content-Type", "application/json")
-	// fmt.Fprint(w, scores)
 	json.NewEncoder(w).Encode(scores)
 }

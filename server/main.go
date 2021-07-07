@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-	server := &PlayerServer{NewInMemoryPlayerStore()}
+	server := &PlayerServer{NewPostgresPlayerStore()}	
 	log.Fatal(http.ListenAndServe(":5000", server))
 }
