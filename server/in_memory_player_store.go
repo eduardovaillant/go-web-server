@@ -16,6 +16,6 @@ func (i *InMemoryPlayerStore) GetPlayerScore(name string) int {
 	return i.store[name]
 }
 
-func (i *InMemoryPlayerStore) GetAllPlayers() map[string]int {
+func (i *InMemoryPlayerStore) GetAllPlayersScores() map[string]int {
 	return i.store
 }

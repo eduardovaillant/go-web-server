@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
 	_ "github.com/lib/pq"
 )
@@ -54,6 +55,22 @@ func (p *PostgresPlayerStore) GetPlayerScore(name string) int {
 	return score
 }
 
-func (p *PostgresPlayerStore) GetAllPlayers() map[string]int {
-	return nil
+func (p *PostgresPlayerStore) GetAllPlayersScores() map[string]int {
+	var result = make(map[string]int)
+	sql := `SELECT player_name, COUNT(player_name) FROM score GROUP BY player_name`
+	rows, err := p.store.Query(sql)
+	if err != nil {
+		panic(err)
+	}
+
+	for rows.Next() {
+		var player_name string
+		var score int
+		if err := rows.Scan(&player_name, &score); err != nil {
+			log.Fatal(err)
+		}
+		result[player_name] = score
+	}
+
+	return result
 }
