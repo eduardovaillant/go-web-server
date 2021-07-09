@@ -37,8 +37,8 @@ type PostgresPlayerStore struct {
 }
 
 func (p *PostgresPlayerStore) RecordWin(name string) {
-	sql := `INSERT INTO score (player_name) VALUES($1)`
-	_, err := p.store.Exec(sql, name)
+	query := `INSERT INTO score (player_name) VALUES($1)`
+	_, err := p.store.Exec(query, name)
 	if err != nil {
 		panic(err)
 	}
@@ -46,8 +46,8 @@ func (p *PostgresPlayerStore) RecordWin(name string) {
 
 func (p *PostgresPlayerStore) GetPlayerScore(name string) int {
 	var score int
-	sql := `SELECT COUNT(*) FROM score WHERE player_name=$1`
-	row := p.store.QueryRow(sql, name)
+	query := `SELECT COUNT(*) FROM score WHERE player_name=$1`
+	row := p.store.QueryRow(query, name)
 	err := row.Scan(&score)
 	if err != nil {
 		panic(err)
@@ -57,19 +57,19 @@ func (p *PostgresPlayerStore) GetPlayerScore(name string) int {
 
 func (p *PostgresPlayerStore) GetAllPlayersScores() map[string]int {
 	var result = make(map[string]int)
-	sql := `SELECT player_name, COUNT(player_name) FROM score GROUP BY player_name`
-	rows, err := p.store.Query(sql)
+	query := `SELECT player_name, COUNT(player_name) FROM score GROUP BY player_name`
+	rows, err := p.store.Query(query)
 	if err != nil {
 		panic(err)
 	}
 
 	for rows.Next() {
-		var player_name string
+		var playerName string
 		var score int
-		if err := rows.Scan(&player_name, &score); err != nil {
+		if err := rows.Scan(&playerName, &score); err != nil {
 			log.Fatal(err)
 		}
-		result[player_name] = score
+		result[playerName] = score
 	}
 
 	return result
