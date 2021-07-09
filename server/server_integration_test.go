@@ -19,5 +19,5 @@ func TestRecordingWinsAndRetrievingThem(t *testing.T) {
 	server.ServeHTTP(response, newGetScoreRequest(player))
 	assertStatus(t, response.Code, http.StatusOK)
 
-	assertResponseBody(t, response.Body.String(), "3")
+	assertResponseBody(t, response.Body.String(), "{\"score\":3}\n")
 }

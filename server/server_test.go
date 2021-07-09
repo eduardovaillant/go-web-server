@@ -21,6 +21,10 @@ func (s *StubPlayerStore) RecordWin(name string) {
 	s.winCalls = append(s.winCalls, name)
 }
 
+func (s *StubPlayerStore) GetAllPlayersScores() map[string]int {
+	return s.scores
+}
+
 func TestGETPlayers(t *testing.T) {
 	store := StubPlayerStore{
 		map[string]int{
@@ -39,7 +43,7 @@ func TestGETPlayers(t *testing.T) {
 		server.ServeHTTP(response, request)
 
 		assertStatus(t, response.Code, http.StatusOK)
-		assertResponseBody(t, response.Body.String(), "20")
+		assertResponseBody(t, response.Body.String(), "{\"score\":20}\n")
 	})
 
 	t.Run("returns Floyd's score", func(t *testing.T) {
@@ -49,7 +53,7 @@ func TestGETPlayers(t *testing.T) {
 		server.ServeHTTP(response, request)
 
 		assertStatus(t, response.Code, http.StatusOK)
-		assertResponseBody(t, response.Body.String(), "10")
+		assertResponseBody(t, response.Body.String(),  "{\"score\":10}\n")
 	})
 
 	t.Run("returns 404 on missing players", func(t *testing.T) {

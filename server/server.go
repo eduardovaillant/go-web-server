@@ -42,6 +42,7 @@ func (p *PlayerServer) showScore(w http.ResponseWriter, player string) {
 
 	if score == 0 {
 		w.WriteHeader(http.StatusNotFound)
+		return
 	}	
 	
 	json.NewEncoder(w).Encode(map[string]int{"score": score})
